@@ -163,7 +163,7 @@ class HumanFollower:
 
             currPersonPosition = data.people[i].pos
 
-            if (self.previousGoal == None):
+            if (not self.previousGoal):
                 reliability = data.people[i].reliability
             else:
 
