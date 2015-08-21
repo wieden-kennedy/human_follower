@@ -27,27 +27,27 @@ class Constant(object):
     # minimum reliability of the position
     reliability_min = .4
     
-class listener_singleton:
+class ListenerSingleton:
     created = false
     listener = none
 
     @staticmethod
     def new():
-        if (listener_singleton.created):
-            return listener_singleton.listener
+        if (ListenerSingleton.created):
+            return ListenerSingleton.listener
         else:
-            listener_singleton.created = true
-            listener_singleton.listener = tf.transform_listener()
+            ListenerSingleton.created = true
+            ListenerSingleton.listener = tf.TransformListener()
             rospy.loginfo("created new instance of listener")
-            return listener_singleton.listener
+            return ListenerSingleton.listener
 
-class goal_euler:
+class GoalEuler:
     def __init__(self, x, y, angle):
         self.x = x
         self.y = y
         self.angle = angle
 
-class human_follower:
+class HumanFollower:
 
     def __init__(self):
         self._pub = rospy.publisher("move_base_simple/goal", pose_stamped, queue_size = 10)
@@ -60,7 +60,7 @@ class human_follower:
 
     def callback(self, data):
         # get transform
-        listener = listener_singleton.new()
+        listener = ListenerSingleton.new()
         (trans, rot) = listener.lookup_transform('/map', '/base_link', rospy.time())
         rospy.loginfo("transform obtained")
 
@@ -85,7 +85,7 @@ class human_follower:
 
                     # setting last known position regardless of if the goal is sent or not
                     # angle is not important. last known position only needs the coordinates
-                    self.last_known_position = goal_euler(leg_position.x, leg_position.y, 0)
+                    self.last_known_position = GoalEuler(leg_position.x, leg_position.y, 0)
 
                     # computing target point that is set distance away
                     difference_x = leg_position.x - trans[0]
@@ -105,7 +105,7 @@ class human_follower:
                     rospy.loginfo("judging goal")
                     if (self.previous_goal == none or self.check_goal_difference(goal_x, goal_y, goal_angle)):
 
-                        self.previous_goal = goal_euler(goal_x, goal_y, goal_angle)
+                        self.previous_goal = GoalEuler(goal_x, goal_y, goal_angle)
                         self.tracked_object_id = data.people[person_index].object_id
 
                         target_goal_simple = self.build_goal_quaternion(goal_x, goal_y, goal_angle) 
@@ -217,13 +217,13 @@ class human_follower:
         self.position_pub.publish(curr_position)
 
     def run(self):
-        rospy.init_node("human_follower")
+        rospy.init_node("HumanFollower")
         rospy.subscriber('people_tracker_measurements',position_measurement_array, self.callback)
         rospy.spin()
 
 if __name__ == '__main__':
     try:
-        hf = human_follower()
+        hf = HumanFollower()
         hf.run()
     except rospy.rosinterrupt_exception:
         rospy.loginfo("oh no, he's dead!")
