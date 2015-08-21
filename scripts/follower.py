@@ -32,7 +32,7 @@ class ListenerSingleton:
             ListenerSingleton.created = True
             ListenerSingleton.listener = tf.TransformListener()
             rospy.loginfo("created new instance of listener")
-            return ListenerSingleton.listener    
+            return ListenerSingleton.listener
 
 class GoalEuler:
     def __init__(self, x, y, angle):
@@ -43,12 +43,12 @@ class GoalEuler:
 class HumanFollower:
 
     def __init__(self):
-        self.pub = rospy.Publisher("move_base_simple/goal", PoseStamped, queue_size = 10)
-        self.positionPub = rospy.Publisher("currentPosition", PoseStamped, queue_size = 10)
+        self.goal_pub = rospy.Publisher("move_base_simple/goal", PoseStamped, queue_size = 10)
+        self.position_pub = rospy.Publisher("currentPosition", PoseStamped, queue_size = 10)
 
-        self.previousGoal = None
-        self.lastKnownPosition = None
-        self.trackedObjectID = "Steve"
+        self.previous_goal = None
+        self.last_known_position = None
+        self.tracked_object_ID = "Steve"
 
 
     def callback(self, data):
@@ -67,27 +67,27 @@ class HumanFollower:
             # found someone more probable than the min probability.
             if (personIndex != -1):
                 rospy.loginfo("Target Found")
-                
+
                 try:
 
                     # logs the start of goal computation
                     rospy.loginfo("Computing goal")
 
-                    # This is where the target person's legs are                                      
+                    # This is where the target person's legs are
                     legPosition = data.people[personIndex].pos
 
                     # setting last known position regardless of if the goal is sent or not
                     # angle is not important. Last Known position only needs the coordinates
-                    self.lastKnownPosition = GoalEuler(legPosition.x, legPosition.y, 0)                    
+                    self.lastKnownPosition = GoalEuler(legPosition.x, legPosition.y, 0)
 
-                    # computing target point that is set distance away    
+                    # computing target point that is set distance away
                     differenceX = legPosition.x - trans[0]
                     differenceY = legPosition.y - trans[1]
-                    
+
                     # calculating target location
                     goalAngle = math.atan2(differenceY, differenceX)
                     length = math.hypot(differenceX, differenceY)
-                    
+
                     # calculating the position of the goal
                     target_length = length - DIST_FROM_TARGET
                     goalX = target_length * math.cos(goalAngle) + trans[0]
@@ -104,17 +104,17 @@ class HumanFollower:
                         target_goal_simple = self.buildGoalQuaternion(goalX, goalY, goalAngle) 
 
                         rospy.loginfo("sending goal")
-                        self.pub.publish(target_goal_simple)
+                        self.goal_pub.publish(target_goal_simple)
                     else:
                         rospy.loginfo("new goal not sufficiently different. Canclled.")
-                
+
                 except Exception as expt:
                     #exc_type, exc_obj, exc_tb = sys.exc_info()
                     #fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
                     #print(exc_type, fname, exc_tb.tb_lineno)
                     #print type(expt)
                     print expt.args
-                
+
 
     def buildGoalQuaternion(self, goalX, goalY, goalAngle):
         rospy.loginfo("building final goal")
@@ -123,11 +123,11 @@ class HumanFollower:
 
         # forming target goal
         goal = PoseStamped()
-        
+
         goal.pose.position.x = goalX
         goal.pose.position.y = goalY
         goal.pose.position.z = 0
-        
+
         goal.pose.orientation.x = quaternion[0]
         goal.pose.orientation.y = quaternion[1]
         goal.pose.orientation.z = quaternion[2]
@@ -142,10 +142,10 @@ class HumanFollower:
         # check if distance is far enough
         distDiff = math.hypot(goalX - self.previousGoal.x, goalY - self.previousGoal.y)
         angleDiff = math.fabs(goalAngle - self.previousGoal.angle)
-        
+
         # if either is greather than threshold, we should send new goal
         return (distDiff > DIST_MIN or angleDiff > ANGLE_THRESHOLD)
-            
+
     def findReliableTarget(self, data, roboPosition):
         # selecting most probable person
         rospy.loginfo("Filtering for suitible target")
@@ -155,17 +155,17 @@ class HumanFollower:
         personIndex = -1
 
         for i in range(len(data.people)):
-            
+
             # reliability metric is based on a combination of leg_detector results
             # and how far this current goal is from the pervious goal.
             # if the same person is still in sight, it is the most reliable
             # If there is no previous goal, then it's simply the leg_detector reliability
 
-            currPersonPosition = data.people[i].pos            
+            currPersonPosition = data.people[i].pos
 
             if (self.previousGoal == None):
                 reliability = data.people[i].reliability
-            else: 
+            else:
 
                 distFromRobot = math.hypot(currPersonPosition.x - roboPosition[0], currPersonPosition.y - roboPosition[1])
                 distFromLastX = currPersonPosition.x - self.lastKnownPosition.x
@@ -182,7 +182,7 @@ class HumanFollower:
                         reliability = data.people[i].reliability + ((PROXIMITY_MAX - distFromLastKnown) * R_SCALE)
                     else:
                         reliability = data.people[i].reliability
-     
+
             if (reliability > maxReliability):
                 maxReliability = reliability
                 personIndex = i
@@ -194,6 +194,7 @@ class HumanFollower:
 
 
     def sendCurrentPosition(self, trans, rot):
+
         curr_Position = PoseStamped()
         curr_Position.pose.position.x = trans[0]
         curr_Position.pose.position.y = trans[0]
@@ -206,12 +207,12 @@ class HumanFollower:
         curr_Position.header.stamp = rospy.Time.now()
 
         # publishing current position for visualization
-        self.positionPub.publish(curr_Position)
+        self.position_pub.publish(curr_Position)
 
     def run(self):
         rospy.init_node("human_follower")
         rospy.Subscriber('people_tracker_measurements',PositionMeasurementArray, self.callback)
-        rospy.spin()        
+        rospy.spin()
 
 if __name__ == '__main__':
     try:
