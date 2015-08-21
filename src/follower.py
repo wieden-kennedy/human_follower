@@ -78,7 +78,7 @@ class HumanFollower:
 
                     # setting last known position regardless of if the goal is sent or not
                     # angle is not important. Last Known position only needs the coordinates
-                    self.lastKnownPosition = GoalEuler(legPosition.x, legPosition.y, 0)
+                    self.last_known_position = GoalEuler(legPosition.x, legPosition.y, 0)
 
                     # computing target point that is set distance away
                     differenceX = legPosition.x - trans[0]
@@ -96,10 +96,10 @@ class HumanFollower:
 
                     # sending goal if it is sufficiently different or the first goal
                     rospy.loginfo("judging goal")
-                    if (self.previousGoal == None or self.checkGoalDifference(goalX, goalY, goalAngle)):
+                    if (self.previous_goal == None or self.checkGoalDifference(goalX, goalY, goalAngle)):
 
-                        self.previousGoal = GoalEuler(goalX, goalY, goalAngle)
-                        self.trackedObjectID = data.people[personIndex].object_id
+                        self.previous_goal = GoalEuler(goalX, goalY, goalAngle)
+                        self.tracked_object_ID = data.people[personIndex].object_id
 
                         target_goal_simple = self.buildGoalQuaternion(goalX, goalY, goalAngle) 
 
@@ -140,8 +140,8 @@ class HumanFollower:
 
     def checkGoalDifference(self, goalX, goalY, goalAngle):
         # check if distance is far enough
-        distDiff = math.hypot(goalX - self.previousGoal.x, goalY - self.previousGoal.y)
-        angleDiff = math.fabs(goalAngle - self.previousGoal.angle)
+        distDiff = math.hypot(goalX - self.previous_goal.x, goalY - self.previous_goal.y)
+        angleDiff = math.fabs(goalAngle - self.previous_goal.angle)
 
         # if either is greather than threshold, we should send new goal
         return (distDiff > DIST_MIN or angleDiff > ANGLE_THRESHOLD)
@@ -163,16 +163,16 @@ class HumanFollower:
 
             currPersonPosition = data.people[i].pos
 
-            if (not self.previousGoal):
+            if (not self.previous_goal):
                 reliability = data.people[i].reliability
             else:
 
                 distFromRobot = math.hypot(currPersonPosition.x - roboPosition[0], currPersonPosition.y - roboPosition[1])
-                distFromLastX = currPersonPosition.x - self.lastKnownPosition.x
-                distFromLastY = currPersonPosition.y - self.lastKnownPosition.y
+                distFromLastX = currPersonPosition.x - self.last_known_position.x
+                distFromLastY = currPersonPosition.y - self.last_known_position.y
                 distFromLastKnown = math.hypot(distFromLastX, distFromLastY)
 
-                if (data.people[i].object_id == self.trackedObjectID):
+                if (data.people[i].object_id == self.tracked_object_ID):
                     reliability = 100
                 elif (distFromRobot > DIST_MAX):
                     reliability = -100
