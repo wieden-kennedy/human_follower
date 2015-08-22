@@ -10,6 +10,7 @@ import sys, os
 from people_msgs.msg import PositionMeasurementArray
 from geometry_msgs.msg import *
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
+from visualization_msgs.msg import Marker
 
 # constants
 DIST_MIN = .3 # how close is too close that robot won't send a new goal
@@ -34,6 +35,7 @@ class ListenerSingleton:
             rospy.loginfo("created new instance of listener")
             return ListenerSingleton.listener
 
+
 class GoalEuler:
     def __init__(self, x, y, angle):
         self.x = x
@@ -43,12 +45,13 @@ class GoalEuler:
 class HumanFollower:
 
     def __init__(self):
-        self.goal_pub = rospy.Publisher("move_base_simple/goal", PoseStamped, queue_size = 10)
-        self.position_pub = rospy.Publisher("currentPosition", PoseStamped, queue_size = 10)
+        self.goal_pub = rospy.Publisher('move_base_simple/goal', PoseStamped, queue_size = 10)
+        self.position_pub = rospy.Publisher('currentPosition', PoseStamped, queue_size = 10)
+        self.marker_pub = rospy.Publisher('marker', Marker, queue_size = 10)
 
         self.previous_goal = None
         self.last_known_position = None
-        self.tracked_object_ID = "Steve"
+        self.tracked_object_id = "Steve"
 
 
     def callback(self, data):
@@ -84,6 +87,8 @@ class HumanFollower:
                     difference_x = leg_position.x - trans[0]
                     difference_y = leg_position.y - trans[1]
 
+                    publish_marker(leg_position.x, leg_position.y, 0)
+
                     # calculating target location
                     goal_angle = math.atan2(difference_y, difference_x)
                     length = math.hypot(differenceX, differenceY)
@@ -95,7 +100,7 @@ class HumanFollower:
 
                     # sending goal if it is sufficiently different or the first goal
                     rospy.loginfo("judging goal")
-                    if (not self.previous_goal or self.checkGoalDifference(goalx, goaly, goal_angle)):
+                    if (not self.previous_goal or self.check_goal_difference(goalx, goaly, goal_angle)):
 
                         self.previous_goal = GoalEuler(goalx, goaly, goal_angle)
                         self.tracked_object_id = person.object_id
@@ -169,7 +174,7 @@ class HumanFollower:
                 dist_from_lasty = curr_person_position.y - self.last_known_position.y
                 dist_from_lastknown = math.hpot(dist_from_lastx, dist_from_lasty)
 
-                if (person.object_id == self.tracked_object_ID):
+                if (person.object_id == self.tracked_object_id):
                     reliability = 100
                 elif (dist_from_robot > DIST_):
                     reliability = -100
@@ -205,6 +210,28 @@ class HumanFollower:
 
         # publishing current position for visualization
         self.position_pub.publish(curr_position)
+
+    def publish_marker(self, x, y, z):
+        marker = Marker()
+        #marker.header.frame_id = '/camera_rgb_optical_frame'
+        marker.header.frame_id = 'map'
+        #marker.header.stamp = Time()
+        marker.id = 0
+        marker.type = marker.CUBE
+        marker.action = marker.ADD
+        marker.scale.x = 1.0
+        marker.scale.y = 1.0
+        marker.scale.z = 1.0
+        marker.color.a = 1.0
+        marker.color.r = 1.0
+        marker.color.g = 0.1
+        marker.color.b = 1.0
+        marker.pose.orientation.w = 1.0
+        marker.pose.orientation.x = x
+        marker.pose.orientation.y = y
+        marker.pose.orientation.z = z
+        marker_pub.publish(marker)
+
 
     def run(self):
         rospy.init_node("human_follower")
