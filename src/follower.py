@@ -65,7 +65,8 @@ class HumanFollower:
 
         # process leg detector input
         if data.people:
-            person_index = self.find_reliable_target(data, trans)
+            #person_index = self.find_reliable_target(data, trans)
+            person = self.find_reliable_target(data, trans)
             rospy.loginfo('person_index**************')
             rospy.loginfo(person_index)
             rospy.loginfo('data.people***************')
@@ -74,7 +75,8 @@ class HumanFollower:
             rospy.loginfo(data.people)
 
             # found someone more probable than the min probability.
-            if person_index != -1:
+            #if person_index != -1:
+            if person:
                 rospy.loginfo("Target Found")
 
                 #try:
@@ -82,7 +84,8 @@ class HumanFollower:
                 rospy.loginfo("Computing goal")
 
                 # This is where the target person's legs are
-                leg_position = data.people[person_index].pos
+                #leg_position = data.people[person_index].pos
+                leg_position = person.pos
 
                 # setting last known position regardless of if the goal is sent or not
                 # angle is not important. Last Known position only needs the coordinates
@@ -195,12 +198,14 @@ class HumanFollower:
 
             if (reliability > max_reliability):
                 max_reliability = reliability
-                person_index = 1
+                #person_index = i
+                return person
 
         rospy.loginfo("count: " + str(len(data.people)))
         rospy.loginfo("final R: " + str(reliability))
 
-        return person_index
+        #return person_index
+        return
 
 
     def send_current_position(self, trans, rot):
