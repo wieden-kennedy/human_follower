@@ -66,6 +66,8 @@ class HumanFollower:
         # process leg detector input
         if data.people:
             person_index = self.find_reliable_target(data, trans)
+            rospy.loginfo('person_index****')
+            rospy.loginfo(person_index)
 
             # found someone more probable than the min probability.
             if person_index != -1:
