@@ -87,9 +87,9 @@ class HumanFollower:
                     difference_y = leg_position.y - trans[1]
 
                     #publish marker for robot
-                    publish_marker(trans[0], trans[1], 0)
+                    self.marker_pub.publish(trans[0], trans[1], 0)
                     #publish marker for target
-                    publish_marker(leg_position.x, leg_position.y, 0)
+                    self.marker_pub.publish(leg_position.x, leg_position.y, 0)
 
                     # calculating target location
                     goal_angle = math.atan2(difference_y, difference_x)
