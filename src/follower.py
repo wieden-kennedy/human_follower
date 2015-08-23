@@ -67,8 +67,8 @@ class HumanFollower:
         if data.people:
             #person_index = self.find_reliable_target(data, trans)
             person = self.find_reliable_target(data, trans)
-            rospy.loginfo('person_index**************')
-            rospy.loginfo(person_index)
+            #rospy.loginfo('person_index**************')
+            #rospy.loginfo(person_index)
             rospy.loginfo('data.people***************')
             rospy.loginfo(len(data.people))
             rospy.loginfo(type(data.people))
