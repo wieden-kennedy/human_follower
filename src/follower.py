@@ -178,7 +178,7 @@ class HumanFollower:
 
                 if (person.object_id == self.tracked_object_id):
                     reliability = 100
-                elif (dist_from_robot > DIST_):
+                elif (dist_from_robot > DIST_MAX):
                     reliability = -100
                 else:
                     # general case not the first goal
