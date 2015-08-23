@@ -174,7 +174,7 @@ class HumanFollower:
                 dist_from_robot = math.hypot(curr_person_position.x - robot_position[0], curr_person_position.y - robot_position[1])
                 dist_from_lastx = curr_person_position.x - self.last_known_position.x
                 dist_from_lasty = curr_person_position.y - self.last_known_position.y
-                dist_from_lastknown = math.hpot(dist_from_lastx, dist_from_lasty)
+                dist_from_lastknown = math.hypot(dist_from_lastx, dist_from_lasty)
 
                 if (person.object_id == self.tracked_object_id):
                     reliability = 100
