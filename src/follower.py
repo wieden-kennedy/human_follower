@@ -73,6 +73,9 @@ class HumanFollower:
             rospy.loginfo(len(data.people))
             rospy.loginfo(type(data.people))
             rospy.loginfo(data.people)
+            rospy.loginfo('***********************')
+            rospy.loginfo('trans')
+            rospy.loginfo(trans)
 
             # found someone more probable than the min probability.
             #if person_index != -1:
@@ -86,6 +89,8 @@ class HumanFollower:
                 # This is where the target person's legs are
                 #leg_position = data.people[person_index].pos
                 leg_position = person.pos
+                rospy.loginfo('person.pos')
+                rospy.loginfo(person.pos)
 
                 # setting last known position regardless of if the goal is sent or not
                 # angle is not important. Last Known position only needs the coordinates
@@ -119,7 +124,7 @@ class HumanFollower:
                     target_goal_simple = self.build_goal_quaternion(goalx, goaly, goal_angle) 
 
                     rospy.loginfo("sending goal")
-                    self.goal_pub.publish(target_goal_simple)
+                    #self.goal_pub.publish(target_goal_simple)
                 else:
                     rospy.loginfo("new goal not sufficiently different. Canclled.")
 
