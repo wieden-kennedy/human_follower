@@ -98,7 +98,7 @@ class HumanFollower:
                     # calculating the position of the goal
                     target_length = length - DIST_FROM_TARGET
                     goalx = target_length * math.cos(goal_angle) + trans[0]
-                    goaly = target_length * math.sin(goalAngle) + trans[1]
+                    goaly = target_length * math.sin(goal_angle) + trans[1]
 
                     # sending goal if it is sufficiently different or the first goal
                     rospy.loginfo("judging goal")
@@ -125,7 +125,7 @@ class HumanFollower:
     def build_goal_quaternion(self, goalx, goaly, goal_angle):
         rospy.loginfo("building final goal")
         # calculating the quaterion
-        quaternion = tf.transformations.quaternion_from_euler(0, 0, goalAngle)
+        quaternion = tf.transformations.quaternion_from_euler(0, 0, goal_angle)
 
         # forming target goal
         goal = PoseStamped()
