@@ -27,7 +27,7 @@ class ListenerSingleton:
 
     @staticmethod
     def new():
-        if (ListenerSingleton.created):
+        if ListenerSingleton.created:
             return ListenerSingleton.listener
         else:
             ListenerSingleton.created = True
@@ -87,6 +87,9 @@ class HumanFollower:
                     difference_x = leg_position.x - trans[0]
                     difference_y = leg_position.y - trans[1]
 
+                    #publish marker for robot
+                    publish_marker(trans[0], trans[1], 0)
+                    #publish marker for target
                     publish_marker(leg_position.x, leg_position.y, 0)
 
                     # calculating target location
