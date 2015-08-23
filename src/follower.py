@@ -155,7 +155,7 @@ class HumanFollower:
 
     def check_goal_difference(self, goalx, goaly, goal_angle):
         # check if distance is far enough
-        dist_diff = math.hypot(goalx - self.previous_goal.x, goalY - self.previous_goal.y)
+        dist_diff = math.hypot(goalx - self.previous_goal.x, goaly - self.previous_goal.y)
         angle_diff = math.fabs(goal_angle - self.previous_goal.angle)
 
         # if either is greather than threshold, we should send new goal
