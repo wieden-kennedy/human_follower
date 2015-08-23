@@ -64,15 +64,14 @@ class HumanFollower:
         self.send_current_position(trans, rot)
 
         # process leg detector input
-        if (data.people):
-            person_index = self.find_reliable_target(data.trans)
+        if data.people:
+            person_index = self.find_reliable_target(data, trans)
 
             # found someone more probable than the min probability.
-            if (person_index != -1):
+            if person_index != -1:
                 rospy.loginfo("Target Found")
 
                 try:
-
                     # logs the start of goal computation
                     rospy.loginfo("Computing goal")
 
