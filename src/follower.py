@@ -71,55 +71,55 @@ class HumanFollower:
             if person_index != -1:
                 rospy.loginfo("Target Found")
 
-                try:
-                    # logs the start of goal computation
-                    rospy.loginfo("Computing goal")
+                #try:
+                # logs the start of goal computation
+                rospy.loginfo("Computing goal")
 
-                    # This is where the target person's legs are
-                    leg_position = data.people[person_index].pos
+                # This is where the target person's legs are
+                leg_position = data.people[person_index].pos
 
-                    # setting last known position regardless of if the goal is sent or not
-                    # angle is not important. Last Known position only needs the coordinates
-                    self.last_known_position = GoalEuler(leg_position.x, leg_position.y, 0)
+                # setting last known position regardless of if the goal is sent or not
+                # angle is not important. Last Known position only needs the coordinates
+                self.last_known_position = GoalEuler(leg_position.x, leg_position.y, 0)
 
-                    # computing target point that is set distance away
-                    difference_x = leg_position.x - trans[0]
-                    difference_y = leg_position.y - trans[1]
+                # computing target point that is set distance away
+                difference_x = leg_position.x - trans[0]
+                difference_y = leg_position.y - trans[1]
 
-                    #publish marker for robot
-                    self.publish_marker(trans[0], trans[1], 0)
-                    #publish marker for target
-                    self.publish_marker(leg_position.x, leg_position.y, 0)
+                #publish marker for robot
+                self.publish_marker(trans[0], trans[1], 0)
+                #publish marker for target
+                self.publish_marker(leg_position.x, leg_position.y, 0)
 
-                    # calculating target location
-                    goal_angle = math.atan2(difference_y, difference_x)
-                    length = math.hypot(difference_x, difference_y)
+                # calculating target location
+                goal_angle = math.atan2(difference_y, difference_x)
+                length = math.hypot(difference_x, difference_y)
 
-                    # calculating the position of the goal
-                    target_length = length - DIST_FROM_TARGET
-                    goalx = target_length * math.cos(goal_angle) + trans[0]
-                    goaly = target_length * math.sin(goal_angle) + trans[1]
+                # calculating the position of the goal
+                target_length = length - DIST_FROM_TARGET
+                goalx = target_length * math.cos(goal_angle) + trans[0]
+                goaly = target_length * math.sin(goal_angle) + trans[1]
 
-                    # sending goal if it is sufficiently different or the first goal
-                    rospy.loginfo("judging goal")
-                    if (not self.previous_goal or self.check_goal_difference(goalx, goaly, goal_angle)):
+                # sending goal if it is sufficiently different or the first goal
+                rospy.loginfo("judging goal")
+                if (not self.previous_goal or self.check_goal_difference(goalx, goaly, goal_angle)):
 
-                        self.previous_goal = GoalEuler(goalx, goaly, goal_angle)
-                        self.tracked_object_id = person.object_id
+                    self.previous_goal = GoalEuler(goalx, goaly, goal_angle)
+                    self.tracked_object_id = person.object_id
 
-                        target_goal_simple = self.build_goal_quaternion(goalx, goaly, goal_angle) 
+                    target_goal_simple = self.build_goal_quaternion(goalx, goaly, goal_angle) 
 
-                        rospy.loginfo("sending goal")
-                        self.goal_pub.publish(target_goal_simple)
-                    else:
-                        rospy.loginfo("new goal not sufficiently different. Canclled.")
+                    rospy.loginfo("sending goal")
+                    self.goal_pub.publish(target_goal_simple)
+                else:
+                    rospy.loginfo("new goal not sufficiently different. Canclled.")
 
-                except Exception as expt:
-                    #exc_type, exc_obj, exc_tb = sys.exc_info()
-                    #fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                    #print(exc_type, fname, exc_tb.tb_lineno)
-                    #print type(expt)
-                    print expt.args
+            #except Exception as expt:
+                #exc_type, exc_obj, exc_tb = sys.exc_info()
+                #fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+                #print(exc_type, fname, exc_tb.tb_lineno)
+                #print type(expt)
+            #    print expt.args
 
 
     def build_goal_quaternion(self, goalx, goaly, goal_angle):
