@@ -93,7 +93,7 @@ class HumanFollower:
 
                     # calculating target location
                     goal_angle = math.atan2(difference_y, difference_x)
-                    length = math.hypot(differenceX, differenceY)
+                    length = math.hypot(difference_x, difference_y)
 
                     # calculating the position of the goal
                     target_length = length - DIST_FROM_TARGET
