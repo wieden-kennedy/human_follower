@@ -232,7 +232,7 @@ class HumanFollower:
         marker.pose.orientation.x = x
         marker.pose.orientation.y = y
         marker.pose.orientation.z = z
-        marker_pub.publish(marker)
+        self.marker_pub.publish(marker)
 
 
     def run(self):
