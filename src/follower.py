@@ -101,7 +101,7 @@ class HumanFollower:
                 difference_y = leg_position.y - trans[1]
 
                 #publish marker for robot
-                self.publish_marker(trans[0], trans[1], 0)
+                #self.publish_marker(trans[0], trans[1], 0)
                 #publish marker for target
                 self.publish_marker(leg_position.x, leg_position.y, 0)
 
