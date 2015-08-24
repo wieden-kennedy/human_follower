@@ -239,9 +239,12 @@ class HumanFollower:
         marker.scale.y = 0.5
         marker.scale.z = 0.5
         marker.pose.orientation.w = 1.0
-        marker.pose.orientation.x = x
-        marker.pose.orientation.y = y
-        marker.pose.orientation.z = z
+        marker.pose.orientation.x = 0.0
+        marker.pose.orientation.y = 0.0
+        marker.pose.orientation.z = 0.0
+        marker.pose.position.x = x
+        marker.pose.position.y = y
+        marker.pose.position.z = z
         marker.color.a = 0.8
         marker.color.r = 1.0
         marker.color.g = 0.3
