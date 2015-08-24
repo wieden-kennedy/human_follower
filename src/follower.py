@@ -71,11 +71,9 @@ class HumanFollower:
             #rospy.loginfo(person_index)
             rospy.loginfo('data.people***************')
             rospy.loginfo(len(data.people))
-            rospy.loginfo(type(data.people))
-            rospy.loginfo(data.people)
-            rospy.loginfo('***********************')
-            rospy.loginfo('trans')
+            rospy.loginfo('robot pos***********************')
             rospy.loginfo(trans)
+            rospy.loginfo(rot)
 
             # found someone more probable than the min probability.
             #if person_index != -1:
@@ -89,7 +87,7 @@ class HumanFollower:
                 # This is where the target person's legs are
                 #leg_position = data.people[person_index].pos
                 leg_position = person.pos
-                rospy.loginfo('person.pos')
+                rospy.loginfo('person.pos********************')
                 rospy.loginfo(person.pos)
 
                 # setting last known position regardless of if the goal is sent or not
