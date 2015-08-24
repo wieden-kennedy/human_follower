@@ -204,13 +204,15 @@ class HumanFollower:
             if reliability > RELIABILITY_MIN:
                 #max_reliability = reliability
                 #person_index = i
-                return person
+                #return person
+                target_person = person
 
         rospy.loginfo("count: " + str(len(data.people)))
         rospy.loginfo("final R: " + str(reliability))
 
         #return person_index
-        return
+        #return
+        return target_person
 
 
     def send_current_position(self, trans, rot):
@@ -250,11 +252,11 @@ class HumanFollower:
         marker.pose.position.z = 0.0
         marker.color.a = 0.8
         marker.color.r = 0.3
-        marker.color.g = 0.4
+        marker.color.g = 0.8
         if ns == 'person':
             marker.color.b = 1.0
         else:
-            marker.color.b = 0.2
+            marker.color.b = 0.1
 
         self.marker_pub.publish(marker)
 
