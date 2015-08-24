@@ -236,7 +236,7 @@ class HumanFollower:
         #marker.header.stamp = Time()
         marker.ns = ns
         marker.id = 0
-        marker.type = marker.CUBEn
+        marker.type = marker.CUBE
         marker.action = marker.ADD
         marker.scale.x = 0.5
         marker.scale.y = 0.5
