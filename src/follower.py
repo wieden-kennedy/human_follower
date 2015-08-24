@@ -230,7 +230,7 @@ class HumanFollower:
     def publish_marker(self, x, y, z):
         marker = Marker()
         #marker.header.frame_id = '/camera_rgb_optical_frame'
-        marker.header.frame_id = '/map'
+        marker.header.frame_id = 'map'
         #marker.header.stamp = Time()
         marker.id = 0
         marker.type = marker.CUBE
