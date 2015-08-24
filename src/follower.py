@@ -101,7 +101,8 @@ class HumanFollower:
                 #publish marker for robot
                 #self.publish_marker(trans[0], trans[1], 0)
                 #publish marker for target
-                self.publish_marker(leg_position.x, leg_position.y, 0)
+                self.publish_marker(leg_position.x, leg_position.y, 0, 'person')
+                self.publish_marker(0.0, 0.0, 0.0, 'robot')
 
                 # calculating target location
                 goal_angle = math.atan2(difference_y, difference_x)
@@ -228,24 +229,25 @@ class HumanFollower:
         # publishing current position for visualization
         self.position_pub.publish(curr_position)
 
-    def publish_marker(self, x, y, z):
+    def publish_marker(self, x, y, z, ns):
         marker = Marker()
         #marker.header.frame_id = '/camera_rgb_optical_frame'
         marker.header.frame_id = 'map'
         #marker.header.stamp = Time()
+        marker.ns = ns
         marker.id = 0
-        marker.type = marker.CUBE
+        marker.type = marker.CUBEn
         marker.action = marker.ADD
         marker.scale.x = 0.5
         marker.scale.y = 0.5
         marker.scale.z = 0.5
-        marker.pose.orientation.w = 1.0
-        marker.pose.orientation.x = 0.0
-        marker.pose.orientation.y = 0.0
-        marker.pose.orientation.z = 0.0
+#        marker.pose.orientation.x = 0.0
+#        marker.pose.orientation.y = 0.0
+#        marker.pose.orientation.z = 0.0
+#        marker.pose.orientation.w = 1.0
         marker.pose.position.x = x
         marker.pose.position.y = y
-        marker.pose.position.z = z
+        marker.pose.position.z = 0.0
         marker.color.a = 0.8
         marker.color.r = 1.0
         marker.color.g = 0.3
