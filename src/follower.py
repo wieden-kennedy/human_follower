@@ -87,7 +87,7 @@ class HumanFollower:
                 # This is where the target person's legs are
                 #leg_position = data.people[person_index].pos
                 leg_position = person.pos
-                rospy.loginfo('person.pos***************************************************************')
+                rospy.loginfo('person pos***************************************************************')
                 rospy.loginfo(person.pos)
 
                 # setting last known position regardless of if the goal is sent or not
