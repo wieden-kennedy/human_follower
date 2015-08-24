@@ -168,9 +168,9 @@ class HumanFollower:
         # selecting most probable person
         rospy.loginfo("Filtering for suitible target")
 
-        max_reliability = RELIABILITY_MIN
+        #max_reliability = RELIABILITY_MIN
         reliability = 0
-        person_index = -1
+        #person_index = -1
 
         for person in data.people:
             # reliability metric is based on a combination of leg_detector results
@@ -199,8 +199,9 @@ class HumanFollower:
                     else:
                         relability = person.reliability
 
-            if (reliability > max_reliability):
-                max_reliability = reliability
+            #if ()reliability > max_reliability):
+            if reliability > RELIABILITY_MIN:
+                #max_reliability = reliability
                 #person_index = i
                 return person
 
