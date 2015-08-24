@@ -235,17 +235,17 @@ class HumanFollower:
         marker.id = 0
         marker.type = marker.CUBE
         marker.action = marker.ADD
-        marker.scale.x = 1.0
-        marker.scale.y = 1.0
-        marker.scale.z = 1.0
-        marker.color.a = 1.0
-        marker.color.r = 1.0
-        marker.color.g = 0.1
-        marker.color.b = 1.0
+        marker.scale.x = 0.5
+        marker.scale.y = 0.5
+        marker.scale.z = 0.5
         marker.pose.orientation.w = 1.0
         marker.pose.orientation.x = x
         marker.pose.orientation.y = y
         marker.pose.orientation.z = z
+        marker.color.a = 0.8
+        marker.color.r = 1.0
+        marker.color.g = 0.3
+        marker.color.b = 1.0
         self.marker_pub.publish(marker)
 
 
