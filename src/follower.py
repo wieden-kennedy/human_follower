@@ -200,9 +200,9 @@ class HumanFollower:
                     else:
                         relability = person.reliability
 
-            #if ()reliability > max_reliability):
-            if reliability > RELIABILITY_MIN:
-                #max_reliability = reliability
+            if reliability > max_reliability:
+            #if reliability > RELIABILITY_MIN:
+                max_reliability = reliability
                 #person_index = i
                 #return person
                 target_person = person
@@ -213,6 +213,13 @@ class HumanFollower:
         #return person_index
         #return
         return target_person
+
+    def find_reliable_target_v2(self, data, robot_position):
+
+        reliable_people = filter(lambda person: person.reliability > RELIABILITY_MIN, data.people)
+
+
+
 
 
     def send_current_position(self, trans, rot):
