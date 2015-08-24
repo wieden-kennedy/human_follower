@@ -249,13 +249,13 @@ class HumanFollower:
         marker.pose.position.y = y
         marker.pose.position.z = 0.0
         marker.color.a = 0.8
-        marker.color.r = 7.0
-        marker.color.g = 0.3
+        marker.color.r = 0.3
+        marker.color.g = 0.4
         if ns == 'person':
             marker.color.b = 1.0
         else:
-            marker.color.b = 0.5
-            
+            marker.color.b = 0.2
+
         self.marker_pub.publish(marker)
 
 
