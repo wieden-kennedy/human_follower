@@ -172,6 +172,7 @@ class HumanFollower:
         #max_reliability = RELIABILITY_MIN
         reliability = 0
         #person_index = -1
+        targe_person = None
 
         for person in data.people:
             # reliability metric is based on a combination of leg_detector results
@@ -218,6 +219,13 @@ class HumanFollower:
 
         reliable_people = filter(lambda person: person.reliability > RELIABILITY_MIN, data.people)
 
+        close_people = map(lambda person, robot: self.distance_from_robot = distance_from(person, robot), reliable_people, robot_position)
+
+        #closets_person = min(reliable_people, key=lambda person: person.)
+
+
+    def distance_from(thing_one, thing_two):
+        return math.hypot(thingone.x - thing_two.x, thing_one.y - thing_two.y)
 
 
 
