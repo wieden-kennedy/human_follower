@@ -172,7 +172,7 @@ class HumanFollower:
         max_reliability = RELIABILITY_MIN
         reliability = 0
         #person_index = -1
-        targe_person = None
+        target_person = None
 
         for person in data.people:
             # reliability metric is based on a combination of leg_detector results
