@@ -169,7 +169,7 @@ class HumanFollower:
         # selecting most probable person
         rospy.loginfo("Filtering for suitible target")
 
-        #max_reliability = RELIABILITY_MIN
+        max_reliability = RELIABILITY_MIN
         reliability = 0
         #person_index = -1
         targe_person = None
