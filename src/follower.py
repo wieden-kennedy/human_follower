@@ -71,6 +71,8 @@ class HumanFollower:
             #rospy.loginfo(person_index)
             rospy.loginfo('data.people***************')
             rospy.loginfo(len(data.people))
+            rospy.loginfo(type(data.people))
+            rospy.loginfo(type(person))
             rospy.loginfo('robot pos***********************')
             rospy.loginfo(trans)
             rospy.loginfo(rot)
@@ -168,6 +170,7 @@ class HumanFollower:
     def find_reliable_target(self, data, robot_position):
         # selecting most probable person
         rospy.loginfo("Filtering for suitible target")
+        
 
         max_reliability = RELIABILITY_MIN
         reliability = 0
@@ -218,14 +221,13 @@ class HumanFollower:
 
     # def find_reliable_target_v2(self, data, robot_position):
 
-    #     reliable_people = filter(lambda person: person.reliability > RELIABILITY_MIN, data.people)
+    #      reliable_people = filter(lambda person: person.reliability > RELIABILITY_MIN, data.people)
+    #      distanced_people = map(lambda person: person.distance_to_robot = self.distance(robot_position, person.pos), reliable_people)
+    #      closest_person = min(dstanced_people, key=lambda person: person.distance_to_robot)
 
-    #     close_people = map(lambda person, robot: self.distance_from_robot = distance_from(person, robot), reliable_people, robot_position)
+    #      return closest_person
 
-    #     #closets_person = min(reliable_people, key=lambda person: person.)
-
-
-    def distance_from(thing_one, thing_two):
+    def distance(thing_one, thing_two):
         return math.hypot(thingone.x - thing_two.x, thing_one.y - thing_two.y)
 
 
