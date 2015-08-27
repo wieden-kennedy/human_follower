@@ -245,7 +245,7 @@ class HumanFollower:
 
            reliable_people = filter(lambda person: person.reliability > RELIABILITY_MIN, data.people)
            distanced_people = self.add_distance(reliable_people, robot_position)
-           closest_person = min(dstanced_people, key=lambda person: person.distance_to_robot)
+           closest_person = min(distanced_people, key=lambda person: person.distance_to_robot)
 
            return closest_person
 
