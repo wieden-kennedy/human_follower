@@ -220,13 +220,13 @@ class HumanFollower:
         return target_person
 
 
-    def find_reliable_target_v2(self, data, robot_position):
+    # def find_reliable_target_v2(self, data, robot_position):
 
-          reliable_people = filter(lambda person: person.reliability > RELIABILITY_MIN, data.people)
-          distanced_people = map(lambda person: person.distance_to_robot = self.distance(robot_position, person.pos), reliable_people)
-          closest_person = min(dstanced_people, key=lambda person: person.distance_to_robot)
+    #       reliable_people = filter(lambda person: person.reliability > RELIABILITY_MIN, data.people)
+    #       distanced_people = map(lambda person: person.distance_to_robot = self.distance(robot_position, person.pos), reliable_people)
+    #       closest_person = min(dstanced_people, key=lambda person: person.distance_to_robot)
 
-          return closest_person
+    #       return closest_person
 
     def distance(thing_one, thing_two):
         return math.hypot(thingone.x - thing_two.x, thing_one.y - thing_two.y)
