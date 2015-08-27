@@ -240,7 +240,7 @@ class HumanFollower:
     def position_to_dict(self, position_measurement_list, robot_position):
 
         return map(
-            lambda pos_measurment: setattr(self, 'distance', distance(pos_measurement.pos, robot_position)),
+            lambda pos_measurment: setattr(self, 'distance', self.distance(pos_measurement.pos, robot_position)),
             position_measurement_list)
 
     # def convert_to_dict(position_measurement_list):
