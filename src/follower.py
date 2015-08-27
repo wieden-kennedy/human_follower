@@ -67,6 +67,7 @@ class HumanFollower:
         if data.people:
             #person_index = self.find_reliable_target(data, trans)
             person = self.find_reliable_target(data, trans)
+            closest_person = self.find_reliable_target_v2(data, trans)
             #rospy.loginfo('person_index**************')
             #rospy.loginfo(person_index)
             rospy.loginfo('data.people***************')
@@ -105,6 +106,7 @@ class HumanFollower:
                 #publish marker for target
                 self.publish_marker(leg_position.x, leg_position.y, 0, 'person')
                 self.publish_marker(0.0, 0.0, 0.0, 'robot')
+                self.publish_marker(person.pos.x, person.pos.y, 0, 'person2')
 
                 # calculating target location
                 goal_angle = math.atan2(difference_y, difference_x)
@@ -170,7 +172,6 @@ class HumanFollower:
     def find_reliable_target(self, data, robot_position):
         # selecting most probable person
         rospy.loginfo("Filtering for suitible target")
-        
 
         max_reliability = RELIABILITY_MIN
         reliability = 0
@@ -219,13 +220,13 @@ class HumanFollower:
         return target_person
 
 
-    # def find_reliable_target_v2(self, data, robot_position):
+    def find_reliable_target_v2(self, data, robot_position):
 
-    #      reliable_people = filter(lambda person: person.reliability > RELIABILITY_MIN, data.people)
-    #      distanced_people = map(lambda person: person.distance_to_robot = self.distance(robot_position, person.pos), reliable_people)
-    #      closest_person = min(dstanced_people, key=lambda person: person.distance_to_robot)
+          reliable_people = filter(lambda person: person.reliability > RELIABILITY_MIN, data.people)
+          distanced_people = map(lambda person: person.distance_to_robot = self.distance(robot_position, person.pos), reliable_people)
+          closest_person = min(dstanced_people, key=lambda person: person.distance_to_robot)
 
-    #      return closest_person
+          return closest_person
 
     def distance(thing_one, thing_two):
         return math.hypot(thingone.x - thing_two.x, thing_one.y - thing_two.y)
@@ -268,8 +269,11 @@ class HumanFollower:
         marker.pose.position.x = x
         marker.pose.position.y = y
         marker.pose.position.z = 0.0
-        marker.color.a = 0.8
-        marker.color.r = 0.3
+        marker.color.a = 1.0
+        if ns == 'person2':
+            marker.color.r = 0.2
+        else:
+            marker.color.r = 1.0
         marker.color.g = 0.8
         if ns == 'person':
             marker.color.b = 1.0
