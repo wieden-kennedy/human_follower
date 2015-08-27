@@ -74,6 +74,7 @@ class HumanFollower:
             rospy.loginfo(len(data.people))
             rospy.loginfo(type(data.people))
             rospy.loginfo(type(person))
+            rospy.loginfo(dir(person))
             rospy.loginfo('robot pos***********************')
             rospy.loginfo(trans)
             rospy.loginfo(rot)
