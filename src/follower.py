@@ -243,11 +243,13 @@ class HumanFollower:
 
     def find_reliable_target_v2(self, data, robot_position):
 
-           reliable_people = filter(lambda person: person.reliability > RELIABILITY_MIN, data.people)
-           distanced_people = self.add_distance(reliable_people, robot_position)
-           closest_person = min(distanced_people, key=lambda person: person.distance_to_robot)
+        closest_person = None
+        reliable_people = filter(lambda person: person.reliability > RELIABILITY_MIN, data.people)
+        if reliable_people:
+            distanced_people = self.add_distance(reliable_people, robot_position)
+            closest_person = min(distanced_people, key=lambda person: person.distance_to_robot)
 
-           return closest_person
+        return closest_person
 
     def distance(self, pos1, pos2_tuple):
         return math.hypot(pos1.x - pos2_tuple[0], pos1.y - pos2_tuple[1])
