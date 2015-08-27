@@ -63,6 +63,11 @@ class HumanFollower:
         # sends current position for visualization
         self.send_current_position(trans, rot)
 
+        rospy.loginfo('&&&&&&&&&&&&&&&&&&&&&')
+        rospy.loginfo(data.people)
+        rospy.loginfo('&&&&&&&&&&&&&&&&&&&&&')
+        rospy.loginfo(self.position_to_dict(data.people, trans))
+
         # process leg detector input
         if data.people:
             #person_index = self.find_reliable_target(data, trans)
@@ -106,7 +111,7 @@ class HumanFollower:
                 #self.publish_marker(trans[0], trans[1], 0)
                 #publish marker for target
                 self.publish_marker(leg_position.x, leg_position.y, 0, 'person')
-                self.publish_marker(0.0, 0.0, 0.0, 'robot')
+                self.publish_marker(trans.x, trans.y, 0.0, 'robot')
                 self.publish_marker(person.pos.x, person.pos.y, 0, 'person2')
 
                 # calculating target location
@@ -229,9 +234,20 @@ class HumanFollower:
 
     #       return closest_person
 
-    def distance(thing_one, thing_two):
+    def distance(self, thing_one, thing_two):
         return math.hypot(thingone.x - thing_two.x, thing_one.y - thing_two.y)
 
+    def position_to_dict(self, position_measurement_list, robot_position):
+
+        return map(
+            lambda pos_measurment: setattr(self, 'distance', distance(pos_measurement.pos, robot_position)),
+            position_measurement_list)
+
+    # def convert_to_dict(position_measurement_list):
+
+    #     for pos in position_measurement_list:
+    #         for k in dir(pos):
+    #             if k 
 
 
 
