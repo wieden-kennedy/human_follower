@@ -250,7 +250,7 @@ class HumanFollower:
            return closest_person
 
     def distance(self, thing_one, thing_two):
-        return math.hypot(thingone.x - thing_two.x, thing_one.y - thing_two.y)
+        return math.hypot(thing_one.x - thing_two.x, thing_one.y - thing_two.y)
 
     def add_distance(self, position_measurement_list, robot_position):
 
