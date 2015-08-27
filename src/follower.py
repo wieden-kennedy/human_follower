@@ -240,6 +240,13 @@ class HumanFollower:
         #return
         return target_person
 
+    def add_distance(self, position_measurement_list, robot_position):
+
+        for pos_meas in position_measurement_list:
+            distance = hypot(pos_meas.x - robot_position[0], pos_meas.y - robot_position[1])
+            setattr(pos_meas, 'distance_to_robot', distance)
+
+        return position_measurement_list
 
     def find_reliable_target_v2(self, data, robot_position):
 
@@ -254,32 +261,6 @@ class HumanFollower:
             closest_person = min(distanced_people, key=lambda person: person.distance_to_robot)
 
         return closest_person
-
-    def distance(self, pos1, pos2_tuple):
-        distance = math.hypot(pos1.x - pos2_tuple[0], pos1.y - pos2_tuple[1])
-        rospy.loginfo('distance')
-        rospy.loginfo(distance)
-        return math.hypot(pos1.x - pos2_tuple[0], pos1.y - pos2_tuple[1]) 
-
-    def add_distance(self, position_measurement_list, robot_position):
-
-        calc_distance_to_robot = lambda pos_measurement: setattr(self,
-                                                                 'distance_to_robot',
-                                                                 self.distance(pos_measurement.pos, robot_position))
-
-        return map(calc_distance_to_robot, position_measurement_list)
-
-        # return map(
-        #     lambda pos_measurement: setattr(self, 'distance_to_robot', self.distance(pos_measurement.pos, robot_position)),
-        #     position_measurement_list)
-
-    # def convert_to_dict(position_measurement_list):
-
-    #     for pos in position_measurement_list:
-    #         for k in dir(pos):
-    #             if k
-
-
 
     def send_current_position(self, trans, rot):
 
