@@ -8,7 +8,7 @@ import math
 import sys, os
 
 from people_msgs.msg import PositionMeasurementArray
-from geometry_msgs.msg import *
+from geometry_msgs.msg import PoseStamped, Twist
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from visualization_msgs.msg import Marker
 
@@ -42,12 +42,14 @@ class GoalEuler:
         self.y = y
         self.angle = angle
 
+
 class HumanFollower:
 
     def __init__(self):
         self.goal_pub = rospy.Publisher('move_base_simple/goal', PoseStamped, queue_size = 10)
         self.position_pub = rospy.Publisher('currentPosition', PoseStamped, queue_size = 10)
         self.marker_pub = rospy.Publisher('marker', Marker, queue_size = 10)
+        self.cmd_vel_pub = rospy.Publisher('cmd_vel_mux/input/navi', Twist, queue_size = 10)
 
         self.previous_goal = None
         self.last_known_position = None
@@ -66,13 +68,13 @@ class HumanFollower:
         rospy.loginfo('&&&&&&&&&&&&&&&&&&&&&')
         rospy.loginfo(data.people)
         rospy.loginfo('&&&&&&&&&&&&&&&&&&&&&')
-        rospy.loginfo(self.position_to_dict(data.people, trans))
+        rospy.loginfo(self.add_distance(data.people, trans))
 
         # process leg detector input
         if data.people:
             #person_index = self.find_reliable_target(data, trans)
             person = self.find_reliable_target(data, trans)
-            #closest_person = self.find_reliable_target_v2(data, trans)
+            closest_person = self.find_reliable_target_v2(data, trans)
             #rospy.loginfo('person_index**************')
             #rospy.loginfo(person_index)
             rospy.loginfo('data.people***************')
@@ -107,6 +109,11 @@ class HumanFollower:
                 difference_x = leg_position.x - trans[0]
                 difference_y = leg_position.y - trans[1]
 
+                rospy.loginfo('difference_x')
+                rospy.loginfo(difference_x)
+                rospy.loginfo('difference_y')
+                rospy.loginfo(difference_y)
+
                 #publish marker for robot
                 #self.publish_marker(trans[0], trans[1], 0)
                 #publish marker for target
@@ -123,6 +130,7 @@ class HumanFollower:
                 goalx = target_length * math.cos(goal_angle) + trans[0]
                 goaly = target_length * math.sin(goal_angle) + trans[1]
 
+
                 # sending goal if it is sufficiently different or the first goal
                 rospy.loginfo("judging goal")
                 if (not self.previous_goal or self.check_goal_difference(goalx, goaly, goal_angle)):
@@ -130,12 +138,19 @@ class HumanFollower:
                     self.previous_goal = GoalEuler(goalx, goaly, goal_angle)
                     self.tracked_object_id = person.object_id
 
-                    target_goal_simple = self.build_goal_quaternion(goalx, goaly, goal_angle) 
+                    target_goal_simple = self.build_goal_quaternion(goalx, goaly, goal_angle)
 
                     rospy.loginfo("sending goal")
                     #self.goal_pub.publish(target_goal_simple)
                 else:
                     rospy.loginfo("new goal not sufficiently different. Canclled.")
+
+                # cmd = Twist()
+                # #cmd.linear.x = (closest_person.distance_to_robot - ) * 5.0
+                # #cmd.angular.z = (-closest_person.)
+                # cmd.linear.x = target_length
+                # cmd.angular.z = 
+
 
             #except Exception as expt:
                 #exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -226,28 +241,34 @@ class HumanFollower:
         return target_person
 
 
-    # def find_reliable_target_v2(self, data, robot_position):
+    def find_reliable_target_v2(self, data, robot_position):
 
-    #       reliable_people = filter(lambda person: person.reliability > RELIABILITY_MIN, data.people)
-    #       distanced_people = map(lambda person: person.distance_to_robot = self.distance(robot_position, person.pos), reliable_people)
-    #       closest_person = min(dstanced_people, key=lambda person: person.distance_to_robot)
+           reliable_people = filter(lambda person: person.reliability > RELIABILITY_MIN, data.people)
+           distanced_people = add_distance(reliable_people)
+           closest_person = min(dstanced_people, key=lambda person: person.distance_to_robot)
 
-    #       return closest_person
+           return closest_person
 
     def distance(self, thing_one, thing_two):
         return math.hypot(thingone.x - thing_two.x, thing_one.y - thing_two.y)
 
-    def position_to_dict(self, position_measurement_list, robot_position):
+    def add_distance(self, position_measurement_list, robot_position):
 
-        return map(
-            lambda pos_measurement: setattr(self, 'distance', self.distance(pos_measurement.pos, robot_position)),
-            position_measurement_list)
+        calc_distance_to_robot = lambda pos_measurement: setattr(self,
+                                                                 'distance_to_robot',
+                                                                 self.distance(pos_measurement.pos, robot_position))
+
+        return map(calc_distance_to_robot, position_measurement_list)
+
+        # return map(
+        #     lambda pos_measurement: setattr(self, 'distance_to_robot', self.distance(pos_measurement.pos, robot_position)),
+        #     position_measurement_list)
 
     # def convert_to_dict(position_measurement_list):
 
     #     for pos in position_measurement_list:
     #         for k in dir(pos):
-    #             if k 
+    #             if k
 
 
 
