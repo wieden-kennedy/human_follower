@@ -244,12 +244,12 @@ class HumanFollower:
 
         distanced_people = []
 
-        for pos_meas in position_measurement_list:
-            distance = math.hypot(pos_meas.pos.x - robot_position[0], pos_meas.pos.y - robot_position[1])
+        for pos_measurement in position_measurement_list:
+            distance = math.hypot(pos_measurement.pos.x - robot_position[0], pos_measeasurement.pos.y - robot_position[1])
             #setattr(pos_meas, 'distance_to_robot', distance)
-            distanced_people.append((person, distance))
+            distanced_people.append((pos_measurement, distance))
 
-        return distanced_people
+        return distanced_people[0]
 
     def find_reliable_target_v2(self, data, robot_position):
 
