@@ -149,7 +149,7 @@ class HumanFollower:
                 #cmd.linear.x = target_length * 5.0
                 cmd.angular.z = -goal_angle * .1
 
-                #self.cmd_vel_pub.publish(cmd)
+                self.cmd_vel_pub.publish(cmd)
 
 
             #except Exception as expt:
