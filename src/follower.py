@@ -133,7 +133,8 @@ class HumanFollower:
 
                 # sending goal if it is sufficiently different or the first goal
                 rospy.loginfo("judging goal")
-                if (not self.previous_goal or self.check_goal_difference(goalx, goaly, goal_angle)):
+                #if (not self.previous_goal or self.check_goal_difference(goalx, goaly, goal_angle)):
+                if (not self.previous_goal):
 
                     self.previous_goal = GoalEuler(goalx, goaly, goal_angle)
                     self.tracked_object_id = person.object_id
@@ -141,7 +142,7 @@ class HumanFollower:
                     target_goal_simple = self.build_goal_quaternion(goalx, goaly, goal_angle)
 
                     rospy.loginfo("sending goal")
-                    #self.goal_pub.publish(target_goal_simple)
+                    self.goal_pub.publish(target_goal_simple)
                 else:
                     rospy.loginfo("new goal not sufficiently different. Canclled.")
 
@@ -246,7 +247,6 @@ class HumanFollower:
 
         for pos_measurement in position_measurement_list:
             distance = math.hypot(pos_measurement.pos.x - robot_position[0], pos_measurement.pos.y - robot_position[1])
-            #setattr(pos_meas, 'distance_to_robot', distance)
             distanced_people.append((pos_measurement, distance))
 
         return distanced_people
@@ -255,12 +255,8 @@ class HumanFollower:
 
         closest_person = None
         reliable_people = filter(lambda person: person.reliability > RELIABILITY_MIN, data.people)
-        rospy.loginfo('reliable_people')
-        rospy.loginfo(reliable_people)
         if reliable_people:
             distanced_people = self.add_distance(reliable_people, robot_position)
-            rospy.loginfo('distanced_people')
-            rospy.loginfo(distanced_people)
             closest_person = min(distanced_people, key=lambda person: person[1])
 
         return closest_person[0]
@@ -313,7 +309,6 @@ class HumanFollower:
             marker.color.b = 0.1
 
         self.marker_pub.publish(marker)
-
 
     def run(self):
         rospy.init_node("human_follower")
