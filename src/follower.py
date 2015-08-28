@@ -77,11 +77,11 @@ class HumanFollower:
             # found someone more probable than the min probability.
             #if person_index != -1:
             if closest_person:
-                rospy.loginfo("Target Found")
+                #rospy.loginfo("Target Found")
 
                 #try:
                 # logs the start of goal computation
-                rospy.loginfo("Computing goal")
+                #rospy.loginfo("Computing goal")
 
                 # This is where the target person's legs are
                 #leg_position = data.people[person_index].pos
@@ -96,10 +96,10 @@ class HumanFollower:
                 difference_x = leg_position.x - trans[0]
                 difference_y = leg_position.y - trans[1]
 
-                rospy.loginfo('difference_x')
-                rospy.loginfo(difference_x)
-                rospy.loginfo('difference_y')
-                rospy.loginfo(difference_y)
+                # rospy.loginfo('difference_x')
+                # rospy.loginfo(difference_x)
+                # rospy.loginfo('difference_y')
+                # rospy.loginfo(difference_y)
 
                 #publish marker for robot
                 #self.publish_marker(trans[0], trans[1], 0)
@@ -119,15 +119,16 @@ class HumanFollower:
                 goalx = target_length * math.cos(goal_angle) + trans[0]
                 goaly = target_length * math.sin(goal_angle) + trans[1]
 
-                rospy.loginfo('goalx')
-                rospy.loginfo(goalx)
-                rospy.loginfo('goaly')
-                rospy.loginfo(goaly)
+
+                # rospy.loginfo('goalx')
+                # rospy.loginfo(goalx)
+                # rospy.loginfo('goaly')
+                # rospy.loginfo(goaly)
 
 
 
                 # sending goal if it is sufficiently different or the first goal
-                rospy.loginfo("judging goal")
+                #rospy.loginfo("judging goal")
                 #if (not self.previous_goal or self.check_goal_difference(goalx, goaly, goal_angle)):
                 #if (not self.previous_goal):
                 if False:
@@ -146,7 +147,7 @@ class HumanFollower:
                 # #cmd.linear.x = (closest_person.distance_to_robot - ) * 5.0
                 # #cmd.angular.z = (-closest_person.)
                 #cmd.linear.x = target_length * 5.0
-                cmd.angular.z = goal_angle
+                cmd.angular.z = -goal_angle
 
                 self.cmd_vel_pub.publish(cmd)
 
@@ -191,7 +192,7 @@ class HumanFollower:
 
     def find_reliable_target(self, data, robot_position):
         # selecting most probable person
-        rospy.loginfo("Filtering for suitible target")
+        #rospy.loginfo("Filtering for suitible target")
 
         max_reliability = RELIABILITY_MIN
         reliability = 0
@@ -232,8 +233,8 @@ class HumanFollower:
                 #return person
                 target_person = person
 
-        rospy.loginfo("count: " + str(len(data.people)))
-        rospy.loginfo("final R: " + str(reliability))
+        #rospy.loginfo("count: " + str(len(data.people)))
+        #rospy.loginfo("final R: " + str(reliability))
 
         #return person_index
         #return
