@@ -97,7 +97,8 @@ class HumanFollower:
 
                 # This is where the target person's legs are
                 #leg_position = data.people[person_index].pos
-                leg_position = person.pos
+                #leg_position = person.pos
+                closest_person = person.pos
                 rospy.loginfo('person pos***************************************************************')
                 rospy.loginfo(person.pos)
 
