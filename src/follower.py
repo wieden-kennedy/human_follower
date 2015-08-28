@@ -148,6 +148,8 @@ class HumanFollower:
                 # #cmd.angular.z = (-closest_person.)
                 #cmd.linear.x = target_length * 5.0
                 cmd.angular.z = -goal_angle * .1
+                rospy.loginfo('cmd angular')
+                rospy.loginfo(cmd.angular.z)
 
                 self.cmd_vel_pub.publish(cmd)
 
