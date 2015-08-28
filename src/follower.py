@@ -242,11 +242,14 @@ class HumanFollower:
 
     def add_distance(self, position_measurement_list, robot_position):
 
+        distanced_people = []
+
         for pos_meas in position_measurement_list:
             distance = math.hypot(pos_meas.pos.x - robot_position[0], pos_meas.pos.y - robot_position[1])
-            setattr(pos_meas, 'distance_to_robot', distance)
+            #setattr(pos_meas, 'distance_to_robot', distance)
+            distanced_people.append((person, distance))
 
-        return position_measurement_list
+        return distanced_people
 
     def find_reliable_target_v2(self, data, robot_position):
 
@@ -258,9 +261,9 @@ class HumanFollower:
             distanced_people = self.add_distance(reliable_people, robot_position)
             rospy.loginfo('distanced_people')
             rospy.loginfo(distanced_people)
-            closest_person = min(distanced_people, key=lambda person: person.distance_to_robot)
+            closest_person = min(distanced_people, key=lambda person: person[1])
 
-        return closest_person
+        return closest_person[0]
 
     def send_current_position(self, trans, rot):
 
