@@ -134,7 +134,8 @@ class HumanFollower:
                 # sending goal if it is sufficiently different or the first goal
                 rospy.loginfo("judging goal")
                 #if (not self.previous_goal or self.check_goal_difference(goalx, goaly, goal_angle)):
-                if (not self.previous_goal):
+                #if (not self.previous_goal):
+                if true:
 
                     self.previous_goal = GoalEuler(goalx, goaly, goal_angle)
                     self.tracked_object_id = person.object_id
@@ -258,6 +259,8 @@ class HumanFollower:
         if reliable_people:
             distanced_people = self.add_distance(reliable_people, robot_position)
             closest_person = min(distanced_people, key=lambda person: person[1])
+        else:
+            return
 
         return closest_person[0]
 
