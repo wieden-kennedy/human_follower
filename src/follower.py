@@ -146,12 +146,9 @@ class HumanFollower:
                 # #cmd.linear.x = (closest_person.distance_to_robot - ) * 5.0
                 # #cmd.angular.z = (-closest_person.)
                 #cmd.linear.x = target_length * 5.0
-                rospy.loginfo('target_length')
-                rospy.loginfo(target_length)
-                cmd.angular.z = difference_x
-                rospy.loginfo('target_turn')
-                #rospy.loginfo()
-                #self.cmd_vel_pub.publish(cmd)
+                cmd.angular.z = goal_angle
+
+                self.cmd_vel_pub.publish(cmd)
 
 
             #except Exception as expt:
