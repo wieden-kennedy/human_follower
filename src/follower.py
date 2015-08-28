@@ -75,13 +75,6 @@ class HumanFollower:
             #person_index = self.find_reliable_target(data, trans)
             person = self.find_reliable_target(data, trans)
             closest_person = self.find_reliable_target_v2(data, trans)
-            #rospy.loginfo('person_index**************')
-            #rospy.loginfo(person_index)
-            rospy.loginfo('data.people***************')
-            rospy.loginfo(len(data.people))
-            rospy.loginfo(type(data.people))
-            rospy.loginfo(type(person))
-            rospy.loginfo(dir(person))
             rospy.loginfo('robot pos***********************')
             rospy.loginfo(trans)
             rospy.loginfo(rot)
@@ -99,8 +92,6 @@ class HumanFollower:
                 #leg_position = data.people[person_index].pos
                 #leg_position = person.pos
                 leg_position = closest_person.pos
-                rospy.loginfo('person pos***************************************************************')
-                rospy.loginfo(person.pos)
 
                 # setting last known position regardless of if the goal is sent or not
                 # angle is not important. Last Known position only needs the coordinates
@@ -144,14 +135,16 @@ class HumanFollower:
                     target_goal_simple = self.build_goal_quaternion(goalx, goaly, goal_angle)
 
                     rospy.loginfo("sending goal")
-                    self.goal_pub.publish(target_goal_simple)
+                    #self.goal_pub.publish(target_goal_simple)
                 else:
                     rospy.loginfo("new goal not sufficiently different. Canclled.")
 
-                # cmd = Twist()
+                cmd = Twist()
                 # #cmd.linear.x = (closest_person.distance_to_robot - ) * 5.0
                 # #cmd.angular.z = (-closest_person.)
-                # cmd.linear.x = target_length
+                cmd.linear.x = target_length
+                rospy.loginfo('target_length')
+                rospy.loginfo(target_length)
                 # cmd.angular.z = 
 
 
