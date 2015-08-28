@@ -145,7 +145,8 @@ class HumanFollower:
                 cmd.linear.x = target_length
                 rospy.loginfo('target_length')
                 rospy.loginfo(target_length)
-                # cmd.angular.z = 
+                # cmd.angular.z =
+                cmd_vel_pub.publish(cmd)
 
 
             #except Exception as expt:
