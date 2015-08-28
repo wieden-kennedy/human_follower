@@ -111,11 +111,19 @@ class HumanFollower:
                 # calculating target location
                 goal_angle = math.atan2(difference_y, difference_x)
                 length = math.hypot(difference_x, difference_y)
+                rospy.loginfo('goal_angle')
+                rospy.loginfo(goal_angle)
 
                 # calculating the position of the goal
                 target_length = length - DIST_FROM_TARGET
                 goalx = target_length * math.cos(goal_angle) + trans[0]
                 goaly = target_length * math.sin(goal_angle) + trans[1]
+
+                rospy.loginfo('goalx')
+                rospy.loginfo(goalx)
+                rospy.loginfo('goaly')
+                rospy.loginfo(goaly)
+
 
 
                 # sending goal if it is sufficiently different or the first goal
@@ -143,7 +151,7 @@ class HumanFollower:
                 cmd.angular.z = difference_x
                 rospy.loginfo('target_turn')
                 #rospy.loginfo()
-                self.cmd_vel_pub.publish(cmd)
+                #self.cmd_vel_pub.publish(cmd)
 
 
             #except Exception as expt:
