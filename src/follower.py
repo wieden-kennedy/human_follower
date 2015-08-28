@@ -119,7 +119,7 @@ class HumanFollower:
                 #publish marker for target
                 self.publish_marker(leg_position.x, leg_position.y, 0, 'person')
                 self.publish_marker(trans[0], trans[1], 0.0, 'robot')
-                self.publish_marker(person2.pos.x, person2.pos.y, 0, 'person2')
+                self.publish_marker(closest_person.pos.x, closest_person.pos.y, 0, 'person2')
 
                 # calculating target location
                 goal_angle = math.atan2(difference_y, difference_x)
@@ -306,6 +306,7 @@ class HumanFollower:
         else:
             marker.color.r = 1.0
         marker.color.g = 0.8
+
         if ns == 'person':
             marker.color.b = 1.0
         else:
