@@ -70,9 +70,9 @@ class HumanFollower:
             #person_index = self.find_reliable_target(data, trans)
             person = self.find_reliable_target(data, trans)
             closest_person = self.find_reliable_target_v2(data, trans)
-            rospy.loginfo('robot pos***********************')
-            rospy.loginfo(trans)
-            rospy.loginfo(rot)
+            #rospy.loginfo('robot pos***********************')
+            #rospy.loginfo(trans)
+            #rospy.loginfo(rot)
 
             # found someone more probable than the min probability.
             #if person_index != -1:
@@ -149,7 +149,7 @@ class HumanFollower:
                 #cmd.linear.x = target_length * 5.0
                 cmd.angular.z = -goal_angle
 
-                self.cmd_vel_pub.publish(cmd)
+                #self.cmd_vel_pub.publish(cmd)
 
 
             #except Exception as expt:
