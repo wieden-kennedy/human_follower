@@ -14,7 +14,7 @@ from visualization_msgs.msg import Marker
 
 # constants
 DIST_MIN = .3 # how close is too close that robot won't send a new goal
-DIST_MAX = 3 # how far is too far that robot should not consider it as new person
+DIST_MAX = 4 # how far is too far that robot should not consider it as new person
 ANGLE_THRESHOLD = math.pi / 6 # how wide is too wide robot will send new goal
 DIST_FROM_TARGET = .5 # how far away the robot should stop from the target
 PROXIMITY_MAX = .4 # how far from last known position leg detector should consider to be probable
@@ -65,11 +65,6 @@ class HumanFollower:
         # sends current position for visualization
         self.send_current_position(trans, rot)
 
-        rospy.loginfo('&&&&&&&&&&&&&&&&&&&&&')
-        rospy.loginfo(data.people)
-        rospy.loginfo('&&&&&&&&&&&&&&&&&&&&&')
-        rospy.loginfo(self.add_distance(data.people, trans))
-
         # process leg detector input
         if data.people:
             #person_index = self.find_reliable_target(data, trans)
@@ -81,7 +76,7 @@ class HumanFollower:
 
             # found someone more probable than the min probability.
             #if person_index != -1:
-            if person:
+            if closest_person:
                 rospy.loginfo("Target Found")
 
                 #try:
@@ -146,6 +141,8 @@ class HumanFollower:
                 rospy.loginfo('target_length')
                 rospy.loginfo(target_length)
                 # cmd.angular.z =
+                rospy.loginfo('target_turn')
+                #rospy.loginfo()
                 self.cmd_vel_pub.publish(cmd)
 
 
