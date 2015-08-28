@@ -135,7 +135,7 @@ class HumanFollower:
                 rospy.loginfo("judging goal")
                 #if (not self.previous_goal or self.check_goal_difference(goalx, goaly, goal_angle)):
                 #if (not self.previous_goal):
-                if true:
+                if True:
 
                     self.previous_goal = GoalEuler(goalx, goaly, goal_angle)
                     self.tracked_object_id = person.object_id
