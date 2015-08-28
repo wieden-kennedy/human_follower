@@ -249,7 +249,7 @@ class HumanFollower:
             #setattr(pos_meas, 'distance_to_robot', distance)
             distanced_people.append((pos_measurement, distance))
 
-        return distanced_people[0]
+        return distanced_people
 
     def find_reliable_target_v2(self, data, robot_position):
 
