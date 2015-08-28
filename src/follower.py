@@ -243,7 +243,7 @@ class HumanFollower:
     def add_distance(self, position_measurement_list, robot_position):
 
         for pos_meas in position_measurement_list:
-            distance = math.hypot(pos_meas.x - robot_position[0], pos_meas.y - robot_position[1])
+            distance = math.hypot(pos_meas.pos.x - robot_position[0], pos_meas.pos.y - robot_position[1])
             setattr(pos_meas, 'distance_to_robot', distance)
 
         return position_measurement_list
